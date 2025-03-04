@@ -22,3 +22,8 @@ Navisub is an Apple iOS application for fine-grained subway route planning based
 🔲 Provide more accurate transfer time predictions
 
 🔲 Provide the direction of door opening
+
+## 🤝 Acknowledgements
+
+- [@北海沙发小萌新](https://weibo.com/u/3179035790) provided data support for this project.
+- My dear roommate and I jointly developed the Android prototype for this project
