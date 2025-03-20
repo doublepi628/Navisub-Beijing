@@ -17,7 +17,7 @@ struct LineView:View {
     var body: some View {
         VStack {
             HStack() {
-                Text("\(env.selectedLine!.name_eg)")
+                Text("\(env.isEnglish ? env.selectedLine!.name_eg : env.selectedLine!.name_cn)")
                     .font(.system(size: 22))
                     .frame(alignment: .center)
                     .background(Color.white)
@@ -49,7 +49,7 @@ struct LineView:View {
                     }
                 }) {
                     HStack {
-                        Text(station.name_eg)
+                        Text(env.isEnglish ? station.name_eg : station.name_cn)
                             .font(.system(size: 20))
                             .foregroundColor(.black)
                             .lineLimit(1)

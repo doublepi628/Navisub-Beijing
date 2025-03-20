@@ -15,7 +15,7 @@ struct HistoryView: View {
     var body: some View {
         VStack {
             HStack() {
-                Text("History")
+                Text(env.isEnglish ? "History" : "历史")
                     .font(.system(size: 22))
                     .frame(alignment: .center)
                     .background(Color.white)
@@ -57,7 +57,7 @@ struct HistoryView: View {
                                     
                                 }
                                 HStack {
-                                    Text("\(db.stationMap[history.start_id]!.name_eg)")
+                                    Text("\(env.isEnglish ? db.stationMap[history.start_id]!.name_eg : db.stationMap[history.start_id]!.name_cn)")
                                         .font(.system(size: 18))
                                         .foregroundColor(.black)
                                         .frame(height: 50)
@@ -70,7 +70,7 @@ struct HistoryView: View {
                                         .foregroundColor(.green)
                                         .padding(10)
                                     Spacer()
-                                    Text("\(db.stationMap[history.end_id]!.name_eg)")
+                                    Text("\(env.isEnglish ? db.stationMap[history.end_id]!.name_eg : db.stationMap[history.end_id]!.name_cn)")
                                         .font(.system(size: 18))
                                         .foregroundColor(.black)
                                         .frame(height: 50)

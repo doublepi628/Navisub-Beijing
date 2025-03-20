@@ -20,7 +20,7 @@ struct SearchView: View {
                 return db.stations
             }
             else {
-                return db.stations.filter { $0.name_eg.localizedCaseInsensitiveContains(searchText) }
+                return db.stations.filter { $0.name_eg.localizedCaseInsensitiveContains(searchText) || $0.name_cn.localizedCaseInsensitiveContains(searchText) }
             }
         }
     
@@ -34,7 +34,7 @@ struct SearchView: View {
                         .foregroundColor(.gray)
                         .padding(10)
                 }
-                TextField("Search a Station Here", text: $searchText)
+                TextField(env.isEnglish ? "Search a Station Here" : "请输入车站名", text: $searchText)
                     .font(.system(size: 22))
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .frame(width: UIScreen.main.bounds.width-100, height: 60)
@@ -51,7 +51,7 @@ struct SearchView: View {
                         env.path.append("LineView")
                     }) {
                         HStack {
-                            Text(line.name_eg)
+                            Text(env.isEnglish ? line.name_eg : line.name_cn)
                                 .font(.system(size: 20))
                                 .foregroundColor(.black)
                             Spacer()
@@ -79,7 +79,7 @@ struct SearchView: View {
                         ))
                     }) {
                         HStack {
-                            Text(station.name_eg)
+                            Text(env.isEnglish ? station.name_eg : station.name_cn)
                                 .font(.system(size: 20))
                                 .foregroundColor(.black)
                                 .lineLimit(1)

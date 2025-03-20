@@ -62,7 +62,7 @@ struct StationView: View {
             }
         }
         if (numList.isEmpty) {
-            return "No Info"
+            return env.isEnglish ? "No Info" : "暂无信息"
         }
         return numList.map { String($0) }.joined(separator: ", ")
     }
@@ -72,7 +72,7 @@ struct StationView: View {
             VStack {
                 Map(position: $cameraPosition) {
                     UserAnnotation()
-                    Marker(env.selectedStation!.name_eg, coordinate: CLLocationCoordinate2D(latitude: env.selectedStation!.latitude, longitude: env.selectedStation!.longitude))
+                    Marker(env.isEnglish ? env.selectedStation!.name_eg : env.selectedStation!.name_cn, coordinate: CLLocationCoordinate2D(latitude: env.selectedStation!.latitude, longitude: env.selectedStation!.longitude))
                         .tint(.blue)
                 }
                 .edgesIgnoringSafeArea(.all)
@@ -107,7 +107,7 @@ struct StationView: View {
                         ScrollView {
                             VStack {
                                 HStack {
-                                    Text(env.selectedStation!.name_eg)
+                                    Text(env.isEnglish ? env.selectedStation!.name_eg : env.selectedStation!.name_cn)
                                         .font(.system(size: 30))
                                         .bold()
                                         .padding(.top, 20)
@@ -164,7 +164,7 @@ struct StationView: View {
                                             let infos = db.getInfo(platform: plat, direction: dir)
                                             if let nextPlat = nextPlat {
                                                 if let st = nextPlat.station {
-                                                    Text("To \(st.name_eg)")
+                                                    Text(env.isEnglish ? "To \(st.name_eg)" : "\(st.name_cn) 方向")
                                                         .font(.system(size: 23))
                                                         .bold()
                                                         .padding(.leading, 20)

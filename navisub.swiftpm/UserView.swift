@@ -18,17 +18,23 @@ struct SampleImage: Identifiable {
 struct UserView: View {
     @EnvironmentObject var db: Database
     @EnvironmentObject var env: EnvObjects
-    let utilName = ["Star", "History"]
-    let helpImages = [SampleImage(url: "select-in-map", caption: "Select a subway station from the map"),
+    let utilNameEG = ["Star", "History"]
+    let utilNameCN = ["收藏", "历史"]
+    let helpImagesEG = [SampleImage(url: "select-in-map", caption: "Select a subway station from the map"),
                       SampleImage(url: "select-by-search", caption: "Select a subway station through search"),
                       SampleImage(url: "select-in-line", caption: "Select a subway station from the Line page"),
                       SampleImage(url: "navigation", caption: "Get detailed navigation information"),
                       SampleImage(url: "view-detail", caption: "Get detailed station information")]
+    let helpImagesCN = [SampleImage(url: "select-in-map-CN", caption: "从地图上选择一个地铁站"),
+                      SampleImage(url: "select-by-search-CN", caption: "通过搜索选择一个地铁站"),
+                      SampleImage(url: "select-in-line-CN", caption: "从地铁线路页面选择一个地铁站"),
+                      SampleImage(url: "navigation-CN", caption: "获取地铁导航具体信息"),
+                      SampleImage(url: "view-detail-CN", caption: "获取地铁站的具体信息")]
     
     var body: some View {
         VStack {
             HStack() {
-                Text("User")
+                Text(env.isEnglish ? "User" : "用户")
                     .font(.system(size: 22))
                     .frame(alignment: .center)
                     .background(Color.white)
@@ -40,11 +46,26 @@ struct UserView: View {
                             Image(systemName: "chevron.left")
                                 .foregroundColor(.gray)
                         }
-                    }.offset(x: 20-UIScreen.main.bounds.width/2))
+                        .padding(.leading, 20)
+                        Spacer()
+                        Button(action: {
+                            if UserDefaults.standard.bool(forKey: "English") {
+                                UserDefaults.standard.set(false, forKey: "English")
+                            }
+                            else {
+                                UserDefaults.standard.set(true, forKey: "English")
+                            }
+                            env.isEnglish.toggle()
+                        }) {
+                            Image(systemName: "globe")
+                                .foregroundColor(.gray)
+                        }
+                        .padding(.trailing, 20)
+                    }.frame(width: UIScreen.main.bounds.width))
             }
             VStack(spacing: 3) {
                 HStack {
-                    Text("Utility 🔧")
+                    Text(env.isEnglish ? "Utility 🔧" : "功能 🔧")
                         .font(.system(size: 30))
                         .bold()
                         .padding(.top, 20)
@@ -56,12 +77,12 @@ struct UserView: View {
                 Divider()
                     .background(Color.gray)
                     .padding(.horizontal)
-                List(utilName, id: \.self) { name in
+                List(env.isEnglish ? utilNameEG : utilNameCN, id: \.self) { name in
                     Button(action: {
-                        if (name == "Star") {
+                        if (name == "Star" || name == "收藏") {
                             env.path.append("StarView")
                         }
-                        else if (name == "History") {
+                        else if (name == "History" || name == "历史") {
                             env.path.append("HistoryView")
                         }
                     }) {
@@ -77,7 +98,7 @@ struct UserView: View {
                 }
                 .frame(height: 130)
                 HStack {
-                    Text("Help 🙋")
+                    Text(env.isEnglish ? "Help 🙋" : "帮助 🙋")
                         .font(.system(size: 30))
                         .bold()
                         .padding(.top, 20)
@@ -91,7 +112,7 @@ struct UserView: View {
                     .padding(.horizontal)
                     .padding(.bottom, 10)
                 TabView {
-                    ForEach(helpImages) { img in
+                    ForEach(env.isEnglish ? helpImagesEG : helpImagesCN) { img in
                         VStack(spacing: 0) {
                             Text(img.caption)
                             Image(img.url)

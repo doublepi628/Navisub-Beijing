@@ -35,16 +35,16 @@ struct ContentView: View {
                             Marker("",coordinate: CLLocationCoordinate2D(latitude: station.latitude, longitude: station.longitude))
                                 .tint(Color(red: 0xE0/255.0, green: 0x0F/255.0, blue: 0x0F/255.0))
                         }
-                        Annotation(station.name_eg, coordinate: CLLocationCoordinate2D(latitude: station.latitude, longitude: station.longitude)) {
+                        Annotation(env.isEnglish ? station.name_eg : station.name_cn, coordinate: CLLocationCoordinate2D(latitude: station.latitude, longitude: station.longitude)) {
                             Menu {
-                                Button("Show Info") {
+                                Button(env.isEnglish ? "Show Info" : "查看详情") {
                                     env.selectedStation = station
                                     env.path.append("StationView")
                                 }
-                                Button("Select As Start") {
+                                Button(env.isEnglish ? "Select As Start" : "设为起点") {
                                     env.setStart(station: station)
                                 }
-                                Button("Select As End") {
+                                Button(env.isEnglish ? "Select As End" : "设为终点") {
                                     env.setEnd(station: station)
                                 }
                             } label: {
@@ -92,12 +92,12 @@ struct ContentView: View {
                                         .fill(Color(red: 0x08/255.0, green: 0x99/255.0, blue: 0x5B/255.0))
                                         .frame(width: 8, height: 8)
                                     if (env.selectedStart == nil) {
-                                        Text("Select Starting Point")
+                                        Text(env.isEnglish ? "Select Starting Point" : "请选择起点")
                                             .font(.system(size: 18))
                                             .foregroundColor(.gray)
                                     }
                                     else {
-                                        Text(env.selectedStart!.name_eg)
+                                        Text(env.isEnglish ? env.selectedStart!.name_eg : env.selectedStart!.name_cn)
                                             .font(.system(size: 18))
                                             .foregroundColor(.black)
                                     }
@@ -117,12 +117,12 @@ struct ContentView: View {
                                         .fill(Color(red: 0xE0/255.0, green: 0x0F/255.0, blue: 0x0F/255.0))
                                         .frame(width: 8, height: 8)
                                     if (env.selectedEnd == nil) {
-                                        Text("Select Ending Point")
+                                        Text(env.isEnglish ? "Select Ending Point" : "请选择终点")
                                             .font(.system(size: 18))
                                             .foregroundColor(.gray)
                                     }
                                     else {
-                                        Text(env.selectedEnd!.name_eg)
+                                        Text(env.isEnglish ? env.selectedEnd!.name_eg : env.selectedEnd!.name_cn)
                                             .font(.system(size: 18))
                                             .foregroundColor(.black)
                                     }
@@ -237,6 +237,7 @@ struct ContentView: View {
         .onAppear() {
             locationManager.checkLocationAuthorization()
             checkIfFirstLaunch()
+            env.isEnglish = UserDefaults.standard.bool(forKey: "English")
         }
     }
     
@@ -257,16 +258,23 @@ struct ContentView: View {
 struct HelpView: View {
     @EnvironmentObject var db: Database
     @EnvironmentObject var env: EnvObjects
-    let helpImages = [SampleImage(url: "select-in-map", caption: "Select a subway station from the map"),
+    @State private var languageNotSelected: Bool = true
+    
+    let helpImagesEG = [SampleImage(url: "select-in-map", caption: "Select a subway station from the map"),
                       SampleImage(url: "select-by-search", caption: "Select a subway station through search"),
                       SampleImage(url: "select-in-line", caption: "Select a subway station from the Line page"),
                       SampleImage(url: "navigation", caption: "Get detailed navigation information"),
                       SampleImage(url: "view-detail", caption: "Get detailed station information")]
+    let helpImagesCN = [SampleImage(url: "select-in-map-CN", caption: "从地图上选择一个地铁站"),
+                      SampleImage(url: "select-by-search-CN", caption: "通过搜索选择一个地铁站"),
+                      SampleImage(url: "select-in-line-CN", caption: "从地铁线路页面选择一个地铁站"),
+                      SampleImage(url: "navigation-CN", caption: "获取地铁导航具体信息"),
+                      SampleImage(url: "view-detail-CN", caption: "获取地铁站的具体信息")]
     
     var body: some View {
         VStack {
             HStack {
-                Text("Navisub 🧭")
+                Text(env.isEnglish ? "Navisub 🧭" : "畅铁北京 🧭")
                     .font(.system(size: 30))
                     .bold()
                     .padding(.top, 20)
@@ -275,7 +283,7 @@ struct HelpView: View {
                     .padding(.bottom, 0)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
-            Text("Navisub is a Beijing subway navigation app that uses train door numbers to help passengers locate resources like nursing rooms, accessible elevators, and AEDs.")
+            Text(env.isEnglish ? "Navisub is a Beijing subway navigation app that uses train door numbers to help passengers locate resources like nursing rooms, accessible elevators, and AEDs.":"畅铁北京（Navisub）是一款北京地铁导航应用，利用列车车门编号帮助乘客查找母婴室、无障碍电梯、AED 等资源。")
                 .padding(.leading, 20)
                 .padding(.trailing, 20)
             Divider()
@@ -283,7 +291,7 @@ struct HelpView: View {
                 .padding(.horizontal)
                 .padding(.bottom, 10)
             TabView {
-                ForEach(helpImages) { img in
+                ForEach(env.isEnglish ? helpImagesEG : helpImagesCN) { img in
                     VStack(spacing: 0) {
                         Image(img.url)
                             .resizable()
@@ -300,7 +308,7 @@ struct HelpView: View {
             Button(action: {
                 env.showHelp = false
             }) {
-                Text("Done")
+                Text(env.isEnglish ? "Done" : "完成")
                    .foregroundColor(.white)
                    .bold()
                    .font(.body)
@@ -315,5 +323,17 @@ struct HelpView: View {
         .frame(maxWidth: .infinity, maxHeight: UIScreen.main.bounds.height)
         .background(Color.white)
         .cornerRadius(20)
+        .alert("Select Language / 选择语言", isPresented: $languageNotSelected) {
+            Button("English") {
+                env.isEnglish = true
+                languageNotSelected = false
+                UserDefaults.standard.set(true, forKey: "English")
+            }
+            Button("中文") {
+                env.isEnglish = false
+                languageNotSelected = false
+                UserDefaults.standard.set(false, forKey: "English")
+            }
+        }
     }
 }

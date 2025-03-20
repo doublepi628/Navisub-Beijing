@@ -15,7 +15,7 @@ struct StarView: View {
     var body: some View {
         VStack {
             HStack() {
-                Text("Star")
+                Text(env.isEnglish ? "Star" : "收藏")
                     .font(.system(size: 22))
                     .frame(alignment: .center)
                     .background(Color.white)
@@ -38,7 +38,7 @@ struct StarView: View {
                             env.path.append("RouteView")
                         }) {
                             HStack {
-                                Text("\(db.stationMap[star.start_id]!.name_eg)")
+                                Text("\(env.isEnglish ? db.stationMap[star.start_id]!.name_eg : db.stationMap[star.start_id]!.name_cn)")
                                     .font(.system(size: 18))
                                     .foregroundColor(.black)
                                     .frame(height: 50)
@@ -51,7 +51,7 @@ struct StarView: View {
                                     .foregroundColor(.green)
                                     .padding(10)
                                 Spacer()
-                                Text("\(db.stationMap[star.end_id]!.name_eg)")
+                                Text("\(env.isEnglish ? db.stationMap[star.end_id]!.name_eg : db.stationMap[star.end_id]!.name_cn)")
                                     .font(.system(size: 18))
                                     .foregroundColor(.black)
                                     .frame(height: 50)

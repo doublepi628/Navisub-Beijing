@@ -17,6 +17,7 @@ class EnvObjects: ObservableObject{
     @Published var selectedEnd: Station? = nil
     @Published var selectedDir: Character = "S"
     @Published var showHelp: Bool = true
+    @Published var isEnglish: Bool = true
     @Published var cameraPosition: MapCameraPosition = MapCameraPosition.region(MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 39.9180, longitude: 116.3960),
         span: MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03)

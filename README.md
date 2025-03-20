@@ -15,7 +15,7 @@ Navisub is an Apple iOS application for fine-grained subway route planning based
 ## 🕒 To Do
 🔲 Publish on the App Store
 
-🔲 Provide a Chinese-English switching feature
+✅ Provide a Chinese-English switching feature
 
 🔲 Provide relevant information about subway station exits
 

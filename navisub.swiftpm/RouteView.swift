@@ -81,7 +81,7 @@ struct RouteView: View {
                         .padding(.leading, 5)
                 }
                 Spacer()
-                Text("Total Duration: \(route.totCost) minutes")
+                Text(env.isEnglish ? "Total Duration: \(route.totCost) minutes" : "预计时长: \(route.totCost) 分钟")
                     .font(.system(size: 20))
                     .padding(.top,3)
                 Spacer()
@@ -124,7 +124,7 @@ struct RouteView: View {
                                                     env.path.append("StationView")
                                                 }) {
                                                     if (j == 0 || j == subroute.count - 1) {
-                                                        Text("\(subroute[j].station!.name_eg)")
+                                                        Text("\(env.isEnglish ? subroute[j].station!.name_eg : subroute[j].station!.name_cn)")
                                                             .font(.system(size: 24))
                                                             .foregroundColor(.black)
                                                             .bold()
@@ -134,7 +134,7 @@ struct RouteView: View {
                                                             .fixedSize(horizontal: true, vertical: false)
                                                     }
                                                     else {
-                                                        Text("\(subroute[j].station!.name_eg)")
+                                                        Text("\(env.isEnglish ? subroute[j].station!.name_eg : subroute[j].station!.name_cn)")
                                                             .font(.system(size: 20))
                                                             .foregroundColor(.black)
                                                             .lineLimit(1)
@@ -168,7 +168,7 @@ struct RouteView: View {
                                                             .fontWeight(.semibold)
                                                             .foregroundColor(.white)
                                                     }
-                                                    Text("To \(db.getDirectionPlatform(db: db, platform: subroute[0], direction: "L")!.station!.name_eg)")
+                                                    Text(env.isEnglish ? "To \(db.getDirectionPlatform(db: db, platform: subroute[0], direction: "L")!.station!.name_eg)" : "\(db.getDirectionPlatform(db: db, platform: subroute[0], direction: "L")!.station!.name_cn)方向")
                                                         .font(.system(size: 16))
                                                         .foregroundColor(.gray)
                                                         .padding(.leading, 3)
@@ -177,7 +177,7 @@ struct RouteView: View {
                                                 .padding(.leading, 20)
                                                 .padding(.top, 1)
                                                 HStack {
-                                                    Text("\(subroute.count) stations, \(route.costs[i]) min")
+                                                    Text(env.isEnglish ? "\(subroute.count) stations, \(route.costs[i]) min" : "\(subroute.count) 站, \(route.costs[i]) 分钟")
                                                         .font(.system(size: 16))
                                                         .foregroundColor(.gray)
                                                         .padding(.leading, 3)
