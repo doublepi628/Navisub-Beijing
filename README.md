@@ -3,8 +3,7 @@
 Navisub is an Apple iOS application for fine-grained subway route planning based on door number positioning. This repository provides the source code for the Beijing area.
 
 ## ✨ News
-- 2025.3.4: We have open-sourced the code for Navisub.
-- 2025.2.23: Navisub Beijing has been submitted to the Swift Student Challenge. Wish it good luck!
+- 2025.3.4: We have open-sourced the code for Navisub
 
 ## 💡 Feature
 
